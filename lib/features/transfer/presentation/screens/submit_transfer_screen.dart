@@ -323,10 +323,9 @@ class _SubmitTransferScreenState extends State<SubmitTransferScreen> {
                   TextFormField(
                     controller: _noteController,
                     enabled: !isLoading,
-                    maxLines: 2,
                     maxLength: AppConstants.maxNoteLength,
                     decoration: InputDecoration(
-                      hintText: 'Add a note (optional)',
+                      hintText: 'Add a note',
                       prefixIcon: const Icon(Icons.note),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),

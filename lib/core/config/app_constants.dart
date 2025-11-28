@@ -35,7 +35,7 @@ class AppConstants {
   static const int minNameLength = 2;
   static const int maxNameLength = 100;
   static const String phonePattern = r'^\+?[0-9]{10,15}$';
-  static const int maxNoteLength = 500;
+  static const int maxNoteLength = 100;
 
   // Currency & Formatting
   static const String currencySymbol = '\$';

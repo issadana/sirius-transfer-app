@@ -111,13 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const Spacer(),
                       state.maybeWhen(
-                        loaded: (transfers) => Text(
-                          '${transfers.length} total',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
+                        loaded: (transfers) => _buildTotalLength(transfers),
+                        created: (transfer, transfers) => _buildTotalLength(transfers),
                         orElse: () => const SizedBox.shrink(),
                       ),
                     ],
@@ -154,6 +149,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Text _buildTotalLength(List<TransferRequest> transfers) {
+    return Text(
+      '${transfers.length} total',
+      style: const TextStyle(
+        fontSize: 14,
+        color: AppColors.textSecondary,
+      ),
+    );
+  }
+
   Widget _buildTransferList(BuildContext context, List<TransferRequest> transfers) {
     if (transfers.isEmpty) {
       return _EmptyState(
@@ -161,13 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // Show only recent 3 transfers
-    final top3Transfers = transfers.toList()
-      ..sort((a, b) => b.createdAt.compareTo(a.createdAt))
-      ..take(3).toList();
     return Column(
       children: [
-        ...top3Transfers.map(
+        ...transfers.map(
           (transfer) => TransferCard(
             transfer: transfer,
             onTap: () => context.push(

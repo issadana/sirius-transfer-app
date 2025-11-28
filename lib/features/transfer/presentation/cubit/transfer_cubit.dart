@@ -9,10 +9,7 @@ import 'package:sirius_transfer_app/features/transfer/domain/entities/transfer_r
 part 'transfer_state.dart';
 part 'transfer_cubit.freezed.dart';
 
-/// Cubit for managing transfer operations
-///
-/// Uses SafeCubit to prevent emitting after close
-/// Uses injectable for dependency injection
+// Cubit for managing transfer operations
 @injectable
 class TransferCubit extends SafeCubit<TransferState> {
   final TransferRepository transferRepository;
@@ -22,7 +19,7 @@ class TransferCubit extends SafeCubit<TransferState> {
 
   TransferCubit(this.transferRepository) : super(const TransferState.initial());
 
-  /// Load all transfers from repository
+  // Load all transfers from repository
   Future<void> loadTransfers() async {
     _cancelToken = CancelToken();
     emit(const TransferState.loading());
@@ -32,13 +29,15 @@ class TransferCubit extends SafeCubit<TransferState> {
     response.fold(
       (error) => emit(TransferState.error(error: error)),
       (transfersList) {
-        transfers = transfersList;
+        // Create a mutable copy and sort it
+        final sorted = transfersList.toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        transfers = sorted;
         emit(TransferState.loaded(transfers: transfers));
       },
     );
   }
 
-  /// Create a new transfer
+  // Create a new transfer
   Future<void> createNewTransfer({
     required String fromWallet,
     required String toWallet,
@@ -69,12 +68,12 @@ class TransferCubit extends SafeCubit<TransferState> {
     );
   }
 
-  /// Refresh transfers (alias for loadTransfers)
+  // Refresh transfers (alias for loadTransfers)
   Future<void> refreshTransfers() async {
     await loadTransfers();
   }
 
-  /// Cancel ongoing requests
+  // Cancel ongoing requests
   void cancelRequest() {
     if (_cancelToken != null && !_cancelToken!.isCancelled) {
       _cancelToken!.cancel("Request cancelled by user");
