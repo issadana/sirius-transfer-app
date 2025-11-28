@@ -1,0 +1,23 @@
+{
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "dart.flutterSdkPath": ".fvm/versions/3.38.2",
+  "cSpell.words": [
+    "dartz",
+    "decoraton",
+    "montserrant",
+    "screenutil",
+    "unfocus"
+  ],
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.organizeImports": true
+  },
+  "dart.analysisServerFolding": true,
+  "dart.debugExternalPackageLibraries": true,
+  "dart.debugSdkLibraries": false,
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+  "dart.showTodos": true,
+  "dart.lineLength": 120,
+  "problems.showCurrentInStatus": true
+}

@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "transfer-app (debug)",
+        "request": "launch",
+        "type": "dart",
+        "args": [
+          "-t",
+          "lib/main.dart"
+        ]
+      },
+      {
+        "name": "transfer-app (release)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "release",
+        "args": [
+          "-t",
+          "lib/main.dart"
+        ]
+      },
+      
+    ]
+  }
+  
