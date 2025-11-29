@@ -5,11 +5,7 @@ class AppConstants {
 
   // Wallet Configuration
   // Available wallet providers for transfers
-  static const List<String> wallets = [
-    'Neo',
-    'Whish',
-    'Bo2',
-  ];
+  static const List<String> wallets = ['Neo', 'Whish', 'Bo2', 'OMT'];
 
   // Fee Configuration
   // Transfer fee percentage (2% = 0.02)

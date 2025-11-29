@@ -101,14 +101,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     children: [
-                      const Text(
-                        'Recent 3 Transfers',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                      state.maybeWhen(
+                        loaded: (transfers) => Text(
+                          'Recent ${transfers.length} Transfers',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
+                        created: (transfer, transfers) => Text(
+                          'Recent ${transfers.length} Transfers',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        orElse: () => const SizedBox.shrink(),
                       ),
+                      // const Text(
+                      //   'Recent Transfers',
+                      //   style: TextStyle(
+                      //     fontSize: 20,
+                      //     fontWeight: FontWeight.bold,
+                      //     color: AppColors.textPrimary,
+                      //   ),
+                      // ),
                       const Spacer(),
                       state.maybeWhen(
                         loaded: (transfers) => _buildTotalLength(transfers),
@@ -164,11 +183,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return _EmptyState(onCreateTransfer: () => context.push('/submit'));
     }
 
-    final top3Transfers = (transfers.toList()..sort((a, b) => (b.createdAt).compareTo(a.createdAt))).take(3).toList();
+    // final top3Transfers = (transfers.toList()..sort((a, b) => (b.createdAt).compareTo(a.createdAt))).take(3).toList();
 
     return Column(
       children: [
-        ...top3Transfers.map(
+        ...transfers.map(
           (transfer) => TransferCard(
             transfer: transfer,
             onTap: () => context.push(
