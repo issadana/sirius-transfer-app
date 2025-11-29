@@ -17,14 +17,14 @@ class TransferRequestModel extends TransferRequest {
   // Create from JSON
   factory TransferRequestModel.fromJson(Map<String, dynamic> json) {
     return TransferRequestModel(
-      id: json['id'] as String,
-      fromWallet: json['fromWallet'] as String,
-      toWallet: json['toWallet'] as String,
-      amount: (json['amount'] as num).toDouble(),
-      receiverName: json['receiverName'] as String,
-      receiverPhone: json['receiverPhone'] as String,
-      note: json['note'] as String?,
-      status: json['status'] as String,
+      id: json['id'] ?? "",
+      fromWallet: json['fromWallet'] ?? "",
+      toWallet: json['toWallet'] ?? "",
+      amount: (json['amount'] ?? 0).toDouble(),
+      receiverName: json['receiverName'] ?? "",
+      receiverPhone: json['receiverPhone'] ?? "",
+      note: json['note'] ?? "",
+      status: json['status'] ?? "",
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
@@ -42,20 +42,5 @@ class TransferRequestModel extends TransferRequest {
       'status': status,
       'createdAt': createdAt.toIso8601String(),
     };
-  }
-
-  // Create from entity
-  factory TransferRequestModel.fromEntity(TransferRequest entity) {
-    return TransferRequestModel(
-      id: entity.id,
-      fromWallet: entity.fromWallet,
-      toWallet: entity.toWallet,
-      amount: entity.amount,
-      receiverName: entity.receiverName,
-      receiverPhone: entity.receiverPhone,
-      note: entity.note,
-      status: entity.status,
-      createdAt: entity.createdAt,
-    );
   }
 }

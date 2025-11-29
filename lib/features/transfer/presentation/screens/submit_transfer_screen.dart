@@ -23,8 +23,10 @@ class _SubmitTransferScreenState extends State<SubmitTransferScreen> {
 
   String? _fromWallet;
   String? _toWallet;
-  double _fee = 0.0;
-  double _total = 0.0;
+
+  // ValueNotifier instead of setState for reactive values
+  final _feeNotifier = ValueNotifier<double>(0.0);
+  final _totalNotifier = ValueNotifier<double>(0.0);
 
   @override
   void dispose() {
@@ -32,15 +34,15 @@ class _SubmitTransferScreenState extends State<SubmitTransferScreen> {
     _receiverNameController.dispose();
     _receiverPhoneController.dispose();
     _noteController.dispose();
+    _feeNotifier.dispose();
+    _totalNotifier.dispose();
     super.dispose();
   }
 
   void _calculateFeeAndTotal() {
     final amount = double.tryParse(_amountController.text) ?? 0.0;
-    setState(() {
-      _fee = AppConstants.calculateFee(amount);
-      _total = AppConstants.calculateTotal(amount);
-    });
+    _feeNotifier.value = AppConstants.calculateFee(amount); // Update notifier
+    _totalNotifier.value = AppConstants.calculateTotal(amount);
   }
 
   void _submitTransfer() {
@@ -76,7 +78,11 @@ class _SubmitTransferScreenState extends State<SubmitTransferScreen> {
                   backgroundColor: AppColors.success,
                 ),
               );
-              context.go('/');
+              // context.go('/');
+              context.pushReplacement(
+                '/details',
+                extra: transfer,
+              );
             },
             error: (error) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -200,61 +206,71 @@ class _SubmitTransferScreenState extends State<SubmitTransferScreen> {
                   const SizedBox(height: 16),
 
                   // Fee and Total Display
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: AppColors.primary.withOpacity(0.2),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Fee (2%)',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.textSecondary,
+                  ValueListenableBuilder<double>(
+                    valueListenable: _feeNotifier,
+                    builder: (context, fee, child) {
+                      return ValueListenableBuilder<double>(
+                        valueListenable: _totalNotifier,
+                        builder: (context, total, child) {
+                          return Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: AppColors.primary.withOpacity(0.2),
                               ),
                             ),
-                            Text(
-                              AppConstants.formatCurrency(_fee),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
-                              ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Fee (2%)',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                    Text(
+                                      AppConstants.formatCurrency(fee), // ← Use fee from notifier
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(height: 24),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Total to Pay',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    Text(
+                                      AppConstants.formatCurrency(total), // ← Use total from notifier
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        const Divider(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Total to Pay',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                            Text(
-                              AppConstants.formatCurrency(_total),
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          );
+                        },
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 16),

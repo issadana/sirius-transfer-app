@@ -21,7 +21,6 @@ class RequestsListScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => context.push('/submit'),
-            tooltip: 'New Transfer',
           ),
         ],
       ),
