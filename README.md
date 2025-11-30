@@ -69,10 +69,13 @@ This project implements **Clean Architecture** with clear separation of concerns
 ```
 lib/
 ├── core/                         # Shared application resources
+│   ├── api/                      # API configuration
 │   ├── config/                   # Application configuration
 │   ├── cubit/                    # Base cubit classes
 │   ├── errors/                   # Error handling
+│   ├── injection/                # Dependency injection
 │   ├── resources/                # App-wide resources
+│   ├── router/                   # Navigation configuration
 │   └── utils/                    # Utility classes
 │
 ├── features/
@@ -229,20 +232,6 @@ lib/
 3. **Transfer Route Card**
 
 4. **Receiver Information Card**
-
----
-
-## Widget Architecture
-
-### Reusable Components
-
-#### **Common Widgets**
-
-#### **Transfer Card**
-
-#### **Transfer Form**
-
-#### **Transfer Details**
 
 ---
 
